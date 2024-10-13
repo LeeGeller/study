@@ -36,3 +36,10 @@ class TextAnswerForQuestions(models.Model):
     answer = models.TextField(verbose_name='Ответ', help_text='Ваш ответ')
     question = models.ForeignKey(Questions, on_delete=models.SET_NULL, related_name='answer_text')
     right_answer = models.BooleanField(verbose_name='Правильный ответ', default=False)
+
+    def __str__(self):
+        return self.answer
+
+    class Meta:
+        verbose_name = 'Ответ на вопрос'
+        verbose_name_plural = 'Ответы на вопросы'
