@@ -1,5 +1,3 @@
-from sndhdr import tests
-
 from django.db import models
 from django.db.models.signals import post_delete, post_save
 from django.dispatch import receiver
@@ -56,5 +54,5 @@ class UserTestAssignment(models.Model):
 @receiver([post_save, post_delete], sender=Questions)
 def update_question_count(sender, instance, **kwargs):
     test = instance.test
-    tests.question_count = test.questions.count()
+    test.question_count = test.questions.count()
     test.save()
