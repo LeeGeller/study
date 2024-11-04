@@ -1,3 +1,10 @@
-from django.shortcuts import render
+from django.views.generic import ListView
 
-# Create your views here.
+from study.models import Tests
+
+
+class HomeListView(ListView):
+    model = Tests
+
+    def get_queryset(self):
+        return Tests.objects.filter(is_active=True)

@@ -5,6 +5,6 @@ from study.views import HomeListView
 
 appname = StudyConfig.name
 urlpatterns = [
-    path('', HomeListView.as_view(template_name='study/index/html'), name='home'),
+    path('', HomeListView.as_view(template_name='study/home.html'), name='home'),
 
 ]
