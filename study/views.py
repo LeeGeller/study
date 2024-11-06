@@ -12,4 +12,8 @@ class TestsListView(LoginRequiredMixin, ListView):
     login_url = 'login'
 
     def get_queryset(self):
-        return Tests.objects.filter(is_active=True)
+        user = self.request.user
+        if user.is_superuser or user.groups.filter(name='Supervisor').exists():
+            return Tests.objects.all()
+        else:
+            return Tests.objects.filter(is_active=True)
