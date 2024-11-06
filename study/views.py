@@ -17,3 +17,7 @@ class TestsListView(LoginRequiredMixin, ListView):
             return Tests.objects.all()
         else:
             return Tests.objects.filter(is_active=True)
+
+
+class TestsCreateView(CreateView):
+    model = Tests
