@@ -1,0 +1,103 @@
+{% extends 'base.html' %}
+
+{% block title %}Список тестов{% endblock %}
+
+{% block content %}
+
+<style>
+    .tests-list-container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        margin: 20px; /* Отступ от края контейнера */
+    }
+
+    .header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        width: 100%; /* Занять всю ширину контейнера */
+        padding: 0 20px; /* Горизонтальный отступ */
+    }
+
+    h1 {
+        flex: 1; /* Занять свободное пространство */
+        text-align: center; /* Центрирование текста */
+        font-size: 2em; /* Размер заголовка в два раза меньше */
+    }
+
+    .tests-list {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        width: 100%; /* Занять всю ширину родителя */
+    }
+
+    .test-item {
+        background-color: #ffffff;
+        border-radius: 5px;
+        box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        padding: 20px;
+        margin: 10px 0;
+        width: 80%; /* Ширина карточек тестов */
+        transition: transform 0.3s;
+    }
+
+    .test-item:hover {
+        transform: scale(1.02); /* Увеличение при наведении */
+    }
+
+    .test-item h2 {
+        color: #4CAF50;
+    }
+
+    .test-button {
+        display: inline-block;
+        background-color: #4CAF50;
+        color: white;
+        padding: 10px 15px;
+        border-radius: 5px;
+        text-decoration: none;
+        transition: background-color 0.3s;
+        margin-top: 10px;
+    }
+
+    .test-button:hover {
+        background-color: #45a049;
+    }
+
+    .create-test-button {
+        background-color: #007BFF; /* Синий цвет для кнопки */
+        color: white;
+        padding: 10px 15px;
+        border-radius: 5px;
+        text-decoration: none;
+        transition: background-color 0.3s;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2); /* Тень для кнопки */
+        border: none; /* Убираем границу */
+        font-size: 1em; /* Размер текста */
+    }
+
+    .create-test-button:hover {
+        background-color: #0056b3; /* Более темный синий при наведении */
+    }
+</style>
+
+<div class="tests-list-container">
+    <div class="header">
+        <h1>Список тестов</h1>
+        <a href="" class="create-test-button">Создать тест</a>
+    </div>
+    <div class="tests-list">
+        {% for test in tests %}
+        <div class="test-item">
+            <h2>{{ test.name }}</h2>
+            <p>{{ test.description }}</p>
+            <a href="" class="test-button">Просмотреть тест</a>
+        </div>
+        {% endfor %}
+    </div>
+
+</div>
+{% endblock %}
+

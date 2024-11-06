@@ -55,6 +55,10 @@
         input[type="submit"]:hover {
             background-color: #45a049;
         }
+        .error {
+            color: red;
+            margin-bottom: 15px;
+        }
         .footer {
             text-align: center;
             margin-top: 20px;
@@ -66,9 +70,14 @@
 <body>
     <div class="login-container">
         <h2>Платформа для обучений</h2>
-        <form method="POST" action="/login/">
-            <input type="text" name="username" placeholder="Логин" required>
-            <input type="password" name="password" placeholder="Пароль" required>
+        <form method="POST" action="{% url 'login' %}">
+            {% csrf_token %}
+            {% if form.non_field_errors %}
+                <div class="error">{{ form.non_field_errors }}</div>
+            {% endif %}
+            <input type="text" name="username" placeholder="Логин" required aria-label="Логин">
+            <input type="password" name="password" placeholder="Пароль" required aria-label="Пароль">
+            <input type="hidden" name="next" value="{{ request.GET.next }}">
             <input type="submit" value="Авторизоваться">
         </form>
         <div class="footer">
