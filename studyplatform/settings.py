@@ -153,3 +153,5 @@ SWAGGER_SETTINGS = {
     }
 }
 
+LOGIN_URL = '/users/login/'
+LOGIN_REDIRECT_URL = '/'
