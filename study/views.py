@@ -3,7 +3,7 @@ from django.views.generic import ListView
 from study.models import Tests
 
 
-class HomeListView(ListView):
+class HomeListView(LoginRequiredMixin, ListView):
     model = Tests
 
     def get_queryset(self):
