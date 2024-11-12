@@ -1,0 +1,290 @@
+{% extends 'base.html' %}
+
+{% block title %}Создание теста{% endblock %}
+
+{% block content %}
+<style>
+    body {
+        font-size: 16px;
+        line-height: 1.6;
+        font-family: Arial, sans-serif;
+    }
+
+    .test-create-container {
+        width: 100%;
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 20px;
+        background-color: #f9f9f9;
+        border-radius: 8px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .form-section {
+        display: block;
+        margin-bottom: 10px;
+    }
+
+    input[type="text"],
+    select,
+    textarea {
+        width: 100%;
+        padding: 10px;
+        border-radius: 5px;
+        border: 1px solid #ddd;
+        box-sizing: border-box;
+        font-size: 16px;
+        line-height: 1.5;
+        margin-bottom: 20px;
+    }
+
+textarea {
+    width: 100%;
+    padding: 10px;
+    border-radius: 5px;
+    border: 1px solid #ddd;
+    box-sizing: border-box;
+    font-size: 16px;
+    line-height: 1.5;
+    margin-bottom: 15px;
+}
+    .questions-section {
+        margin-top: 30px;
+    }
+
+    .question {
+        background-color: #ffffff;
+        padding: 15px;
+        margin-bottom: 15px;
+        border-radius: 5px;
+        border: 1px solid #ddd;
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .answers {
+        margin-top: 10px;
+    }
+
+    .answer-option {
+        display: flex;
+        align-items: center;
+        margin-top: 10px;
+    }
+
+    .answer-option input[type="text"] {
+        flex-grow: 1;
+        padding: 8px;
+        border-radius: 5px;
+        border: 1px solid #ddd;
+        margin-right: 10px;
+        width: 70%; /* Уменьшена ширина поля ввода */
+        font-size: 16px;
+        line-height: 1.5;
+    }
+
+    .checkbox-label {
+        display: inline-flex;
+        align-items: center;
+        margin-left: 10px; /* Сдвигаем чекбокс вправо */
+    }
+
+    .checkbox-label input[type="checkbox"]:checked + span::before {
+        content: '✔'; /* Галочка */
+        color: green;
+        font-size: 48px; /* Увеличен размер галочки в 2 раза */
+        margin-right: 10px;
+    }
+
+    .checkbox-label span.question-mark {
+        font-size: 20px;
+        color: #007bff; /* Цвет вопроса */
+        margin-left: 5px;
+    }
+
+    .score-input {
+        display: none;
+        width: 30%;
+        padding: 8px;
+        border-radius: 5px;
+        border: 1px solid #ddd;
+        margin-left: 10px;
+        font-size: 16px;
+    }
+
+    .btn-add-question, .btn-add-choice, button[type="submit"] {
+        background-color: #007bff;
+        color: white;
+        padding: 10px 20px;
+        font-size: 16px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+        margin-top: 15px;
+    }
+
+    .btn-add-question:hover, .btn-add-choice:hover, button[type="submit"]:hover {
+        background-color: #0056b3;
+    }
+
+    button[type="submit"] {
+        width: 100%;
+        margin-top: 20px;
+    }
+
+    .answers-header {
+        font-size: 18px;
+        font-weight: bold;
+        margin-bottom: 10px;
+    }
+
+    input[type="text"], textarea {
+        word-wrap: break-word;
+    }
+
+    .test-create-container {
+        max-width: 800px;
+    }
+</style>
+
+<div class="test-create-container">
+    <h1>Создать новый тест</h1>
+    <form method="post">
+        {% csrf_token %}
+
+        <div class="form-section">
+            <label for="name_of_test">Название теста:</label>
+            <textarea id="name_of_test" name="name_of_test" rows="1" oninput="autoResize(this)" required></textarea>
+        </div>
+
+        <div class="questions-section">
+            <h2>Добавить вопросы</h2>
+            <div id="questions-container"></div>
+            <button type="button" onclick="addQuestion()" class="btn-add-question">Добавить вопрос</button>
+        </div>
+
+        <button type="submit">Сохранить тест</button>
+    </form>
+</div>
+
+<script>
+    function addQuestion() {
+        const container = document.getElementById("questions-container");
+        const questionIndex = container.children.length;
+
+        const questionDiv = document.createElement("div");
+        questionDiv.className = "question";
+        questionDiv.id = `question-${questionIndex}`;
+
+        questionDiv.innerHTML = `
+            <label>Вопрос:</label>
+            <textarea name="questions[${questionIndex}][name_of_question]" rows="1" oninput="autoResize(this)" required></textarea>
+
+            <label>Тип ответа:</label>
+            <select name="questions[${questionIndex}][answer_type]" onchange="toggleAnswerType(this, ${questionIndex})">
+                <option value="one_answer">Один ответ</option>
+                <option value="multiple_answers">Несколько ответов</option>
+                <option value="text">Текст</option>
+            </select>
+
+            <div class="answers-header">Ответы:</div>
+            <div class="answers" id="answers-${questionIndex}"></div>
+            <button type="button" onclick="addChoice(${questionIndex})" class="btn-add-choice" id="add-choice-${questionIndex}">Добавить вариант ответа</button>
+        `;
+
+        container.appendChild(questionDiv);
+    }
+
+    function toggleAnswerType(select, questionIndex) {
+        const answersDiv = document.getElementById(`answers-${questionIndex}`);
+        const addChoiceButton = document.getElementById(`add-choice-${questionIndex}`);
+        answersDiv.innerHTML = ''; // Очищаем ответы
+        const answerType = select.value;
+
+        if (answerType === "text") {
+            // Скрыть кнопку для добавления вариантов
+            addChoiceButton.style.display = 'none';
+        } else {
+            // Показываем кнопку для добавления вариантов ответа, если не выбран тип "Текст"
+            addChoiceButton.style.display = 'inline-block';
+            addChoice(questionIndex); // Добавляем вариант ответа
+        }
+    }
+
+    function addChoice(questionIndex) {
+        const answersDiv = document.getElementById(`answers-${questionIndex}`);
+        const choiceIndex = answersDiv.children.length;
+        const answerTypeSelect = document.querySelector(`select[name="questions[${questionIndex}][answer_type]"]`);
+        const isSingleAnswer = answerTypeSelect.value === "one_answer";
+
+        const choiceDiv = document.createElement("div");
+        choiceDiv.className = "answer-option";
+        choiceDiv.innerHTML = `
+            <textarea name="questions[${questionIndex}][choices][${choiceIndex}][name_of_choice]" rows="1" oninput="autoResize(this)" required></textarea>
+
+            <label class="checkbox-label">
+                <input type="checkbox" id="checkbox-${questionIndex}-${choiceIndex}" name="questions[${questionIndex}][choices][${choiceIndex}][is_correct]"
+                       class="correct-answer-checkbox"
+                       onclick="handleCorrectAnswer(${questionIndex}, ${choiceIndex}, this)"
+                       ${isSingleAnswer ? 'data-single="true"' : ''}>
+                <span></span>
+                <span class="question-mark">?</span>
+            </label>
+
+            <input type="number" name="questions[${questionIndex}][choices][${choiceIndex}][score]"
+                   class="score-input"
+                   placeholder="Баллы"
+                   min="0">
+        `;
+
+        answersDiv.appendChild(choiceDiv);
+    }
+
+    function handleCorrectAnswer(questionIndex, choiceIndex, checkbox) {
+        const questionDiv = document.getElementById(`question-${questionIndex}`);
+        const checkboxes = questionDiv.querySelectorAll('.correct-answer-checkbox');
+        const scoreInput = checkbox.parentElement.nextElementSibling;
+        const questionMark = checkbox.parentElement.querySelector('.question-mark');
+        const answerTypeSelect = document.querySelector(`select[name="questions[${questionIndex}][answer_type]"]`);
+        const isSingleAnswer = answerTypeSelect.value === "one_answer";
+
+        if (checkbox.checked) {
+            // Показать поле для баллов
+            scoreInput.style.display = "inline-block";
+            questionMark.style.display = "none";
+
+            if (isSingleAnswer) {
+                // Отключаем все другие чекбоксы, кроме текущего
+                checkboxes.forEach((otherCheckbox) => {
+                    if (otherCheckbox !== checkbox) {
+                        otherCheckbox.disabled = true;
+                        otherCheckbox.checked = false;
+                    }
+                });
+            }
+        } else {
+            // Если галочка снята, скрыть поле для баллов
+            scoreInput.style.display = "none";
+            questionMark.style.display = "inline-block";
+
+            if (isSingleAnswer) {
+                checkboxes.forEach((otherCheckbox) => {
+                    otherCheckbox.disabled = false;
+                });
+            }
+        }
+    }
+
+
+    function autoResize(element) {
+        setTimeout(() => {
+            element.style.height = 'auto';
+            element.style.height = (element.scrollHeight) + 'px';
+        }, 100);
+    }
+
+</script>
+
+{% endblock %}

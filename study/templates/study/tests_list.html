@@ -86,7 +86,7 @@
 <div class="tests-list-container">
     <div class="header">
         <h1>Список тестов</h1>
-        <a href="" class="create-test-button">Создать тест</a>
+        <a href="{% url 'test_form' %}" class="create-test-button">Создать тест</a>
     </div>
     <div class="tests-list">
         {% for test in tests %}

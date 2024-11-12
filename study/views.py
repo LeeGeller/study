@@ -22,3 +22,4 @@ class TestsListView(LoginRequiredMixin, ListView):
 
 class TestsCreateView(CreateView):
     model = Tests
+    fields = ['name_of_test', 'is_active']
