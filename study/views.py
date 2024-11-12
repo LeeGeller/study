@@ -1,4 +1,5 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.urls import reverse_lazy
 from django.views.generic import ListView, CreateView
 
 from study.models import Tests
@@ -23,3 +24,7 @@ class TestsListView(LoginRequiredMixin, ListView):
 class TestsCreateView(CreateView):
     model = Tests
     fields = ['name_of_test', 'is_active']
+    success_url = reverse_lazy('tests_list')
+
+    def form_valid(self, form):
+        test = form
