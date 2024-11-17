@@ -8,6 +8,7 @@ class Tests(models.Model):
     )
     is_active = models.BooleanField(verbose_name='Активен', default=True)
     questions_count = models.PositiveIntegerField(default=0, verbose_name='Количество вопросов')
+    total_score = models.PositiveIntegerField(default=0, verbose_name='Общее количество очков')
 
     def __str__(self):
         return self.name_of_test
