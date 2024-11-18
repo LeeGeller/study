@@ -1,8 +1,9 @@
+import re
+
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.urls import reverse_lazy
 from django.views.generic import ListView, CreateView
 
-from core.utils import calculate_test_field
 from study.models import Tests, Questions
 
 
@@ -30,18 +31,26 @@ class TestsCreateView(CreateView):
     def form_valid(self, form):
         self.object = form.save()
 
-        questions_data = self.request.POST.getlist('questions')
+        questions_data = []
+        print(questions_data)
 
-        for question_id in questions_data:
-            try:
-                question = Questions.objects.get(id=question_id)
-                question.test = self.object
-                question.save()
-            except Questions.DoesNotExist:
-                continue
+        for question, val in self.request.POST.items():
+            if question.startswith('questions['):
+                questions_info = re.match(r'questions\[(\d+)\]\[(\w+)\]', question)
+                print(questions_info)
 
-        question_total_count, total_score = calculate_test_field(self.object)
-        self.object.total_score = total_score
-        self.object.questions_count = question_total_count
+        # for question_id in questions_data:
+        #     try:
+        #         question = Questions.objects.get(id=question_id)
+        #         question.test = self.object
+        #         question.save()
+        #     except Questions.DoesNotExist:
+        #         continue
+        #
+        #
+        # question_total_count, total_score = calculate_test_field(self.object)
+        # self.object.total_score = total_score
+        # self.object.questions_count = question_total_count
+        # self.object.save()
 
-        return super().form_valid(form)
+        # return super().form_valid(form)
