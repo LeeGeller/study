@@ -1,3 +1,5 @@
+from django.db.models import Sum
+
 from study.models import Questions, ChoicesForQuestions, TextAnswerForQuestions
 
 
