@@ -42,7 +42,7 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     'django_extensions',
     'users',
-    'study.apps.StudyConfig',
+    'study',
     'core',
 ]
 

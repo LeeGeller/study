@@ -1,8 +1,11 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.db.models.signals import post_save, post_delete
 from django.urls import reverse_lazy
 from django.views.generic import ListView, CreateView
 
+from core.utils import calculate_test_field
 from study.models import Tests, Questions
+from study.signals import update_tests_score
 
 
 class HomeListView(LoginRequiredMixin, ListView):
@@ -38,4 +41,9 @@ class TestsCreateView(CreateView):
                 question.save()
             except Questions.DoesNotExist:
                 continue
+
+        question_total_count, total_score = calculate_test_field(self.object)
+        self.object.total_score = total_score
+        self.object.questions_count = question_total_count
+
         return super().form_valid(form)
