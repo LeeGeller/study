@@ -21,7 +21,6 @@ class Tests(models.Model):
 class Questions(models.Model):
     name_of_question = models.TextField(verbose_name='Вопрос', unique=True, help_text='Введите вопрос')
     test = models.ForeignKey(Tests, on_delete=models.CASCADE, related_name='questions')
-    question_score = models.PositiveIntegerField(verbose_name='Количество баллов', default=0)
 
     def __str__(self):
         return self.name_of_question

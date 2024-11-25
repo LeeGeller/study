@@ -4,7 +4,8 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.urls import reverse_lazy
 from django.views.generic import ListView, CreateView
 
-from study.models import Tests, Questions
+from core.utils import get_questions_data
+from study.models import Tests
 
 
 class HomeListView(LoginRequiredMixin, ListView):
@@ -29,28 +30,9 @@ class TestsCreateView(CreateView):
     success_url = reverse_lazy('tests_list')
 
     def form_valid(self, form):
-        self.object = form.save()
+        test = form.save()
+        print(type(test))
+        test_data = self.request.POST.items()
+        test_info = get_questions_data(test_data)
 
-        questions_data = []
-        print(questions_data)
-
-        for question, val in self.request.POST.items():
-            if question.startswith('questions['):
-                questions_info = re.match(r'questions\[(\d+)\]\[(\w+)\]', question)
-                print(questions_info)
-
-        # for question_id in questions_data:
-        #     try:
-        #         question = Questions.objects.get(id=question_id)
-        #         question.test = self.object
-        #         question.save()
-        #     except Questions.DoesNotExist:
-        #         continue
-        #
-        #
-        # question_total_count, total_score = calculate_test_field(self.object)
-        # self.object.total_score = total_score
-        # self.object.questions_count = question_total_count
-        # self.object.save()
-
-        # return super().form_valid(form)
+    # return super().form_valid(form)
