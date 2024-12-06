@@ -1,10 +1,9 @@
-import re
-
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.shortcuts import redirect
 from django.urls import reverse_lazy
 from django.views.generic import ListView, CreateView
 
-from core.utils import get_questions_data
+from core.utils import get_sorted_questions_data, save_questions
 from study.models import Tests
 
 
@@ -33,6 +32,7 @@ class TestsCreateView(CreateView):
         test = form.save()
         print(type(test))
         test_data = self.request.POST.items()
-        test_info = get_questions_data(test_data)
+        sorted_questions_data = get_sorted_questions_data(test_data)
+        save_questions(sorted_questions_data, test)
 
-    # return super().form_valid(form)
+        return redirect("test_list")
