@@ -1,6 +1,5 @@
 import re
-from pprint import pprint
-from typing import Dict, Any
+from typing import Any
 
 from django.db.models import Sum
 from django.http import QueryDict
@@ -32,52 +31,52 @@ def calculate_test_field(test) -> tuple[int, int]:
         return question_total_count, total_score
 
 
-def get_sorted_questions_data(test_data: QueryDict) -> list[dict]:
+def get_sorted_questions_data(test_data: QueryDict) -> list[dict[str, Any]]:
     questions_data = {}
 
     for key, value in test_data:
+        print(test_data)
+        print(0, key, value)
 
         question_match = re.match(r'questions\[(\d+)\]\[(\w+)\]', key)
         if question_match:
             index_question, field_question = question_match.groups()
             index_question = int(index_question)
-            question = questions_data.setdefault(index_question, {"choices": []})
+            print('i', index_question)
+            print('fi', field_question)
+            while len(index_question) <= index_question:
 
-            if field_question == "choices":
+                if field_question == "choices":
 
-                choice_match = re.match(r'choices\[(\d+)\]\[(\w+)\]', key)
-                if choice_match:
-                    index_choice, field_choice = choice_match.groups()
-                    index_choice = int(index_choice)
+                    choice_match = re.match(r'choices\[(\d+)\]\[(\w+)\]', key)
+                    if choice_match:
+                        index_choice, field_choice = map(int, choice_match.groups())
+                        print(2, questions_data)
+                        choice = questions_data["choices"].setdefault(index_choice, {})
+                        print(3, questions_data)
+                        choice[field_choice] = value
+                else:
+                    questions_data[field_question] = value
 
-
-                    while len(questions_data[index_question]["choices"]) <= index_choice:
-                        questions_data[index_question]["choices"].append({})
-                    questions_data[index_question]["choices"][index_choice][field_choice] = value
-            else:
-                # Прямое поле вопроса (например, name_of_question или answer_type)
-                questions_data[index_question][field_question] = value
-
-    # Отладочная информация
-    print("Распарсенные данные вопросов:")
-    pprint(questions_data)
+    return list(questions_data.values())
 
 
-def save_questions(questions_data: list[Dict[str, Any]], test) -> None:
-    # Сохраняем вопросы и варианты ответов
+def save_questions(questions_data: dict[int, dict[str, Any]], test) -> None:
+    print(4, questions_data)
     for question_data in questions_data:
+        print(5, question_data)
         name_of_question = question_data.get("name_of_question")
         answer_type = question_data.get("answer_type")
 
-        # Создаем вопрос
-        print(f"Создаем вопрос: {name_of_question}, {answer_type}")
+        print(6, {name_of_question}, {answer_type})
         question = Questions.objects.create(
             name_of_question=name_of_question,
             test=test,
-            answer_type=answer_type,  # Предполагаем, что в модели Questions есть это поле
+            answer_type=answer_type,
         )
 
-        # Обрабатываем варианты ответов для типов "one_answer" и "multiple_answers"
+        print(7, questions_data)
+
         if answer_type in ("one_answer", "multiple_answers"):
             for choice_data in question_data["choices"]:
                 name_of_choice = choice_data.get("name_of_choice")
@@ -85,7 +84,7 @@ def save_questions(questions_data: list[Dict[str, Any]], test) -> None:
                 score = choice_data.get("score")
                 score = int(score) if score and score.isdigit() else 0
 
-                print(f"Добавляем вариант ответа: {name_of_choice}, правильный: {is_correct}, баллы: {score}")
+                print(8, {name_of_choice}, {is_correct}, {score})
                 ChoicesForQuestions.objects.create(
                     question=question,
                     name_of_choice=name_of_choice,
@@ -93,7 +92,6 @@ def save_questions(questions_data: list[Dict[str, Any]], test) -> None:
                     score=score,
                 )
 
-        # Обрабатываем текстовые ответы
         elif answer_type == "text":
             text_answer = question_data.get("text_answer")
             print(f"Добавляем текстовый ответ: {text_answer}")
@@ -101,5 +99,3 @@ def save_questions(questions_data: list[Dict[str, Any]], test) -> None:
                 question=question,
                 text_answer=text_answer,
             )
-
-    return questions_data

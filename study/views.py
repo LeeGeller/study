@@ -30,7 +30,7 @@ class TestsCreateView(CreateView):
 
     def form_valid(self, form):
         test = form.save()
-        print(type(test))
+
         test_data = self.request.POST.items()
         sorted_questions_data = get_sorted_questions_data(test_data)
         save_questions(sorted_questions_data, test)
