@@ -22,6 +22,11 @@ class TestsListView(LoginRequiredMixin, ListView):
         else:
             return Tests.objects.filter(is_active=True)
 
+    def get_context_data(self, *, object_list=None, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['tests'] = context['object_list']
+        return context
+
 
 class TestsCreateView(CreateView):
     model = Tests
@@ -35,4 +40,4 @@ class TestsCreateView(CreateView):
         sorted_questions_data = get_sorted_questions_data(test_data)
         save_questions(sorted_questions_data, test)
 
-        return redirect("test_list")
+        return redirect("tests_list")
