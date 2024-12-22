@@ -19,7 +19,7 @@ class Tests(models.Model):
 
 
 class Questions(models.Model):
-    name_of_question = models.TextField(verbose_name='Вопрос', unique=True, help_text='Введите вопрос')
+    name_of_question = models.TextField(verbose_name='Вопрос', unique=False, help_text='Введите вопрос')
     test = models.ForeignKey(Tests, on_delete=models.CASCADE, related_name='questions')
 
     def __str__(self):
@@ -27,7 +27,7 @@ class Questions(models.Model):
 
 
 class ChoicesForQuestions(models.Model):
-    name_of_choice = models.TextField(verbose_name='Вариант ответа', unique=True, help_text='Введите вариант ответа')
+    name_of_choice = models.TextField(verbose_name='Вариант ответа', unique=False, help_text='Введите вариант ответа')
     question = models.ForeignKey(Questions, on_delete=models.CASCADE, related_name='choices')
     right_answer = models.BooleanField(verbose_name='Правильный ответ', default=False)
     score = models.PositiveIntegerField(verbose_name='Балл', default=0)
