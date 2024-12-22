@@ -63,39 +63,33 @@ def get_sorted_questions_data(test_data: QueryDict) -> dict[int:dict[str:str | i
 
 def save_questions(questions_data: dict, test) -> None:
     print(questions_data)
-    for key, val in questions_data.items():
-        print(key)
-        print(val)
-        # name_of_question = questions_data.get("name_of_question")
-        # answer_type = questions_data.get("answer_type")
-        #
-        # print(6, {name_of_question}, {answer_type})
-        # question = Questions.objects.create(
-        #     name_of_question=name_of_question,
-        #     test=test,
-        #     answer_type=answer_type,
-        # )
-        #
-        # print(7, questions_data)
-        #
-        # if answer_type in ("one_answer", "multiple_answers"):
-        #     for choice_data in questions_data["choices"]:
-        #         name_of_choice = choice_data.get("name_of_choice")
-        #         is_correct = choice_data.get("is_correct") == "on"
-        #         score = choice_data.get("score")
-        #         score = int(score) if score and score.isdigit() else 0
-        #
-        #         print(8, {name_of_choice}, {is_correct}, {score})
-        #         ChoicesForQuestions.objects.create(
-        #             question=question,
-        #             name_of_choice=name_of_choice,
-        #             is_correct=is_correct,
-        #             score=score,
-        #         )
-        #
+    for index_questions, data_questions in questions_data.items():
+        print(data_questions)
+
+        name_of_question = data_questions.get("name_of_question")
+        answer_type = data_questions.get("answer_type")
+
+        question = Questions.objects.create(
+            name_of_question=name_of_question,
+            test=test,
+        )
+
+        if answer_type in ["one_answer", "multiple_answers"]:
+            for data in data_questions["choices"]:
+                name_of_choice = data.get("name_of_choice")
+                score = 0 if data.get("score", 0) == "" else int(data.get("score"))
+                right_answer = data.get("is_correct") == "on"
+
+                print(name_of_choice, score, right_answer)
+
+                ChoicesForQuestions.objects.create(
+                    name_of_choice=name_of_choice,
+                    question=question,
+                    right_answer=right_answer,
+                    score=score,
+                )
         # elif answer_type == "text":
-        #     text_answer = questions_data.get("text_answer")
-        #     print(f"Добавляем текстовый ответ: {text_answer}")
+        #     text_answer = data_questions["choices"].get("text_answer")
         #     TextAnswerForQuestions.objects.create(
         #         question=question,
         #         text_answer=text_answer,
