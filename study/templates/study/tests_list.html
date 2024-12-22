@@ -91,8 +91,8 @@
     <div class="tests-list">
         {% for test in tests %}
         <div class="test-item">
-            <h2>{{ test.name }}</h2>
-            <p>{{ test.description }}</p>
+            <h2>{{ test.name_of_test }}</h2>
+            <p>{{ test.questions_count }}</p>
             <a href="" class="test-button">Просмотреть тест</a>
         </div>
         {% endfor %}
