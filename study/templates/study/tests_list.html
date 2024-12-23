@@ -92,8 +92,10 @@
         {% for test in tests %}
         <div class="test-item">
             <h2>{{ test.name_of_test }}</h2>
-            <p>{{ test.questions_count }}</p>
+            <p>Количество вопросов: {{ test.questions_count }}</p>
+            <p>Максимальное количество очков: {{ test.total_score }}</p>
             <a href="" class="test-button">Просмотреть тест</a>
+            <a href="{% url 'test_delete' test.pk %}" class="btn btn-danger">Удалить</a>
         </div>
         {% endfor %}
     </div>

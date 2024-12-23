@@ -1,7 +1,7 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import redirect
 from django.urls import reverse_lazy
-from django.views.generic import ListView, CreateView
+from django.views.generic import ListView, CreateView, DeleteView, DetailView
 
 from core.utils import get_sorted_questions_data, save_questions
 from study.models import Tests
@@ -30,7 +30,7 @@ class TestsListView(LoginRequiredMixin, ListView):
 
 class TestsCreateView(CreateView):
     model = Tests
-    fields = ['name_of_test', ]
+    fields = ['name_of_test', 'is_active', 'questions_count', 'total_score']
     success_url = reverse_lazy('tests_list')
 
     def form_valid(self, form):
@@ -41,3 +41,14 @@ class TestsCreateView(CreateView):
         save_questions(sorted_questions_data, test)
 
         return redirect("tests_list")
+
+class TestsDetailView(DetailView):
+
+    model = Tests
+    fields = ['pk', 'name_of_test', 'is_active', 'questions_count', 'total_score']
+
+
+class TestsDeleteView(DeleteView):
+    model = Tests
+    template_name = 'study/tests_confirm_delete.html'
+    success_url = reverse_lazy('tests_list')
