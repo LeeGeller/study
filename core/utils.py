@@ -1,33 +1,8 @@
 import re
 
-from django.db.models import Sum
 from django.http import QueryDict
 
-from study.models import ChoicesForQuestions, TextAnswerForQuestions, Questions
-
-
-def calculate_test_field(test) -> tuple[int, int]:
-    """
-    Calculate question_total_count and total_score for model Tests.
-    :param: test is model Tests
-    """
-    if test:
-        questions = test.questions.all()
-        question_total_count = questions.count()
-
-        choices_score = (
-                ChoicesForQuestions.objects.filter(question__in=questions)
-                .aggregate(total_score=Sum('score'))['total_score'] or 0
-        )
-
-        texts_score = (
-                TextAnswerForQuestions.objects.filter(question__in=questions).aggregate(total_score=Sum('score'))[
-                    'total_score'] or 0
-        )
-
-        total_score = choices_score + texts_score
-
-        return question_total_count, total_score
+from study.models import ChoicesForQuestions, Questions
 
 
 def get_sorted_questions_data(test_data: QueryDict) -> dict[int:dict[str:str | int], str:str]:
