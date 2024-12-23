@@ -33,6 +33,6 @@ class TextAnswerForQuestionsAdmin(admin.ModelAdmin):
 
 @admin.register(UserTestAssignment)
 class UserTestAssignmentAdmin(admin.ModelAdmin):
-    list_display = ('id', 'user', 'users_test', 'attempts', 'attempt_at', 'status',)
+    list_display = ('id', 'user', 'test', 'attempts', 'attempt_at', 'status',)
     list_filter = ('user',)
     search_fields = ('user', 'users_test',)
