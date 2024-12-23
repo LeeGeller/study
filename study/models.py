@@ -1,4 +1,5 @@
 from django.db import models
+from django.db.models import Prefetch
 
 
 class Tests(models.Model):
@@ -9,6 +10,21 @@ class Tests(models.Model):
     is_active = models.BooleanField(verbose_name='Активен', default=True)
     questions_count = models.PositiveIntegerField(default=0, verbose_name='Количество вопросов')
     total_score = models.PositiveIntegerField(default=0, verbose_name='Общее количество очков')
+
+    def update_tests_statistics(self):
+        test = Tests.objects.prefetch_related(
+            Prefetch('questions__choices', queryset=ChoicesForQuestions.objects.all())).get(
+            pk=self.pk)
+
+        self.questions_count = test.questions.count()
+
+        total_score = 0
+        for question in test.questions.all():
+            total_score += sum(choice.score for choice in question.choices.filter(right_answer=True))
+
+        self.total_score = total_score
+
+        self.save()
 
     def __str__(self):
         return self.name_of_test
@@ -21,6 +37,19 @@ class Tests(models.Model):
 class Questions(models.Model):
     name_of_question = models.TextField(verbose_name='Вопрос', unique=False, help_text='Введите вопрос')
     test = models.ForeignKey(Tests, on_delete=models.CASCADE, related_name='questions')
+
+    def save(self, *args, **kwargs):
+        super().save(*args, **kwargs)
+
+        if self.pk:
+            self.test.update_tests_statistics()
+
+    def delete(self, *args, **kwargs):
+        test = self.test
+
+        super().delete(*args, **kwargs)
+
+        test.update_tests_statistics()
 
     def __str__(self):
         return self.name_of_question
@@ -65,8 +94,8 @@ class UserTestAssignment(models.Model):
         'users.User', on_delete=models.CASCADE, related_name='user_assignments',
         null=True, blank=True, verbose_name='Пользователь'
     )
-    users_test = models.ForeignKey('study.Tests', on_delete=models.CASCADE, related_name='assigned_tests',
-                                   verbose_name='Тест')
+    test = models.ForeignKey('study.Tests', on_delete=models.CASCADE, related_name='assigned_tests',
+                             verbose_name='Тест', null=True, blank=True)
     attempts = models.PositiveIntegerField(verbose_name='Количество попыток', default=0)
     attempt_at = models.DateTimeField(verbose_name='Попытка', auto_now_add=True)
     status = models.CharField(max_length=20,
