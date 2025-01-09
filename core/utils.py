@@ -32,22 +32,21 @@ def get_sorted_questions_data(test_data: QueryDict) -> dict[int:dict[str:str | i
                     questions_data[index_question]["choices"][index_choice][field_choice] = value
             else:
                 questions_data[index_question][field_question] = value
+    print(test_data)
 
     return questions_data
 
 
 def save_questions(questions_data: dict, test) -> None:
-    print(questions_data)
     for index_questions, data_questions in questions_data.items():
-        print(data_questions)
 
-        name_of_question = data_questions.get("name_of_question")
         answer_type = data_questions.get("answer_type")
 
         question = Questions.objects.create(
-            name_of_question=name_of_question,
+            name_of_question=data_questions.get("name_of_question"),
             test=test,
         )
+        print(questions_data)
 
         if answer_type in ["one_answer", "multiple_answers"]:
             for data in data_questions["choices"]:
@@ -55,17 +54,19 @@ def save_questions(questions_data: dict, test) -> None:
                 score = 0 if data.get("score", 0) == "" else int(data.get("score"))
                 right_answer = data.get("is_correct") == "on"
 
-                print(name_of_choice, score, right_answer)
-
                 ChoicesForQuestions.objects.create(
                     name_of_choice=name_of_choice,
                     question=question,
                     right_answer=right_answer,
                     score=score,
                 )
-        # elif answer_type == "text":
-        #     text_answer = data_questions["choices"].get("text_answer")
-        #     TextAnswerForQuestions.objects.create(
-        #         question=question,
-        #         text_answer=text_answer,
-        #     )
+    print(test)
+
+    test.update_tests_statistics()
+    print('Did update tests statistics')
+    # elif answer_type == "text":
+    #     text_answer = data_questions["choices"].get("text_answer")
+    #     TextAnswerForQuestions.objects.create(
+    #         question=question,
+    #         text_answer=text_answer,
+    #     )

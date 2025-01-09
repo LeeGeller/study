@@ -12,17 +12,21 @@ class Tests(models.Model):
     total_score = models.PositiveIntegerField(default=0, verbose_name='Общее количество очков')
 
     def update_tests_statistics(self):
-        test = Tests.objects.prefetch_related(
-            Prefetch('questions__choices', queryset=ChoicesForQuestions.objects.all())).get(
-            pk=self.pk)
+        test = Tests.objects.get(pk=self.pk)
+        print(test)
 
         self.questions_count = test.questions.count()
+        print('Questions count: ', self.questions_count)
 
         total_score = 0
         for question in test.questions.all():
+            print(question.choices.filter(right_answer=True))
+            print(question.choices.filter(right_answer=True).count())
             total_score += sum(choice.score for choice in question.choices.filter(right_answer=True))
+            print(total_score)
 
         self.total_score = total_score
+        print('Total score: ', self.total_score)
 
         self.save()
 
@@ -40,8 +44,10 @@ class Questions(models.Model):
 
     def save(self, *args, **kwargs):
         super().save(*args, **kwargs)
+        print('Save method')
 
         if self.pk:
+            print('Pk: ', self.pk)
             self.test.update_tests_statistics()
 
     def delete(self, *args, **kwargs):
@@ -49,7 +55,8 @@ class Questions(models.Model):
 
         super().delete(*args, **kwargs)
 
-        test.update_tests_statistics()
+        if self.pk:
+            test.update_tests_statistics()
 
     def __str__(self):
         return self.name_of_question

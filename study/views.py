@@ -1,3 +1,4 @@
+from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import redirect
 from django.urls import reverse_lazy
@@ -35,15 +36,18 @@ class TestsCreateView(CreateView):
 
     def form_valid(self, form):
         test = form.save()
+        try:
+            test_data = self.request.POST
+            sorted_questions_data = get_sorted_questions_data(test_data)
+            save_questions(sorted_questions_data, test)
+        except Exception as e:
+            print(f"Error during test creation: {e}")
+            messages.error(self.request, "Ошибка при сохранении теста. Проверьте данные.")
+            return self.form_invalid(form)
+        return redirect(self.success_url)
 
-        test_data = self.request.POST.items()
-        sorted_questions_data = get_sorted_questions_data(test_data)
-        save_questions(sorted_questions_data, test)
-
-        return redirect("tests_list")
 
 class TestsDetailView(DetailView):
-
     model = Tests
     fields = ['pk', 'name_of_test', 'is_active', 'questions_count', 'total_score']
 
