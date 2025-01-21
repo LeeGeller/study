@@ -7,60 +7,81 @@
     body {
         font-size: 16px;
         line-height: 1.6;
-        font-family: Arial, sans-serif;
+        font-family: 'Segoe UI', sans-serif;
+        background-color: #f4f6f9;
     }
 
     .test-create-container {
-        width: 100%;
-        max-width: 1200px;
-        margin: 0 auto;
-        padding: 20px;
-        background-color: #f9f9f9;
-        border-radius: 8px;
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        max-width: 900px;
+        margin: 50px auto;
+        padding: 30px;
+        background-color: white;
+        border-radius: 12px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        animation: fadeIn 0.5s ease;
     }
 
-    .form-section {
-        display: block;
+    @keyframes fadeIn {
+        from { opacity: 0; }
+        to { opacity: 1; }
+    }
+
+    .form-buttons {
+        display: flex;
+        justify-content: flex-end;
+        margin-top: 20px;
+    }
+
+    .form-buttons button {
+        padding: 10px 20px;
+        border-radius: 8px;
+        font-size: 14px;
+        font-weight: bold;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+        border: none;
+    }
+
+    .clear-button {
+        background-color: #ff5c5c;
+        color: white;
+        font-size: 12px;
+    }
+
+    .clear-button:hover {
+        background-color: #ff2a2a;
+    }
+
+    .save-button {
+        background-color: #57c4f4;
+        color: white;
+    }
+
+    .save-button:hover {
+        background-color: #009bd5;
+    }
+
+    label {
+        font-size: 16px;
         margin-bottom: 10px;
     }
 
-    input[type="text"],
-    select,
-    textarea {
+    textarea, select {
         width: 100%;
         padding: 10px;
-        border-radius: 5px;
+        font-size: 14px;
         border: 1px solid #ddd;
+        border-radius: 8px;
         box-sizing: border-box;
-        font-size: 16px;
-        line-height: 1.5;
-        margin-bottom: 20px;
-    }
-
-textarea {
-    width: 100%;
-    padding: 10px;
-    border-radius: 5px;
-    border: 1px solid #ddd;
-    box-sizing: border-box;
-    font-size: 16px;
-    line-height: 1.5;
-    margin-bottom: 15px;
-}
-    .questions-section {
-        margin-top: 30px;
+        margin-bottom: 15px;
     }
 
     .question {
         background-color: #ffffff;
-        padding: 15px;
+        padding: 20px;
         margin-bottom: 15px;
-        border-radius: 5px;
+        border-radius: 8px;
         border: 1px solid #ddd;
-        display: flex;
-        flex-direction: column;
-        gap: 10px;
     }
 
     .answers {
@@ -69,94 +90,91 @@ textarea {
 
     .answer-option {
         display: flex;
-        align-items: center;
+        justify-content: space-between;
         margin-top: 10px;
     }
 
-    .answer-option input[type="text"] {
-        flex-grow: 1;
-        padding: 8px;
-        border-radius: 5px;
-        border: 1px solid #ddd;
+    .answer-option textarea {
+        width: 85%;
         margin-right: 10px;
-        width: 70%; /* Уменьшена ширина поля ввода */
-        font-size: 16px;
-        line-height: 1.5;
     }
 
     .checkbox-label {
-        display: inline-flex;
+        display: flex;
         align-items: center;
-        margin-left: 10px; /* Сдвигаем чекбокс вправо */
-    }
-
-    .checkbox-label input[type="checkbox"]:checked + span::before {
-        content: '✔'; /* Галочка */
-        color: green;
-        font-size: 48px; /* Увеличен размер галочки в 2 раза */
-        margin-right: 10px;
-    }
-
-    .checkbox-label span.question-mark {
-        font-size: 20px;
-        color: #007bff; /* Цвет вопроса */
-        margin-left: 5px;
     }
 
     .score-input {
         display: none;
-        width: 30%;
-        padding: 8px;
-        border-radius: 5px;
-        border: 1px solid #ddd;
+        width: 60px;
+        font-size: 14px;
+        padding: 5px;
         margin-left: 10px;
-        font-size: 16px;
-    }
-
-    .btn-add-question, .btn-add-choice, button[type="submit"] {
-        background-color: #007bff;
-        color: white;
-        padding: 10px 20px;
-        font-size: 16px;
-        border: none;
-        border-radius: 5px;
-        cursor: pointer;
-        transition: background-color 0.3s ease;
-        margin-top: 15px;
-    }
-
-    .btn-add-question:hover, .btn-add-choice:hover, button[type="submit"]:hover {
-        background-color: #0056b3;
-    }
-
-    button[type="submit"] {
-        width: 100%;
-        margin-top: 20px;
+        border-radius: 8px;
+        border: 1px solid #ddd;
     }
 
     .answers-header {
-        font-size: 18px;
         font-weight: bold;
-        margin-bottom: 10px;
+        margin-top: 10px;
     }
 
-    input[type="text"], textarea {
-        word-wrap: break-word;
+    .btn-add-question, .btn-add-choice {
+        background-color: #57c4f4;
+        color: white;
+        padding: 12px 20px;
+        font-size: 14px;
+        border-radius: 8px;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+        margin-top: 20px;
     }
 
-    .test-create-container {
-        max-width: 800px;
+    .btn-add-question:hover, .btn-add-choice:hover {
+        background-color: #009bd5;
+    }
+
+    .error-message {
+        color: red;
+        font-size: 14px;
+        margin-top: 10px;
+    }
+
+    .checkbox-label input[type="checkbox"]:checked {
+        background-color: #57c4f4; /* Цвет фона при активации */
+        border: 2px solid #57c4f4; /* Окружение чекбокса рамкой */
+    }
+
+    .checkbox-label input[type="checkbox"]:checked + span {
+        font-weight: bold;
+        color: #57c4f4;
+    }
+
+    .checkbox-label .correct-answer-text {
+        font-size: 14px;
+        margin-left: 10px;
+        color: #57c4f4;
+        font-weight: bold;
+    }
+
+    .checkbox-label .score-input {
+        display: inline-block;
+        margin-left: 10px;
     }
 </style>
 
 <div class="test-create-container">
-    <h1>Создать новый тест</h1>
+    <h1>Создайте свой тест</h1>
+
     <form method="post">
         {% csrf_token %}
 
         <div class="form-section">
             <label for="name_of_test">Название теста:</label>
-            <textarea id="name_of_test" name="name_of_test" rows="1" oninput="autoResize(this)" required></textarea>
+            <textarea id="name_of_test" name="name_of_test" rows="1" required></textarea>
+            {% if form.name_of_test.errors %}
+                <div class="error-message">{{ form.name_of_test.errors }}</div>
+            {% endif %}
         </div>
 
         <div class="questions-section">
@@ -164,12 +182,22 @@ textarea {
             <div id="questions-container"></div>
             <button type="button" onclick="addQuestion()" class="btn-add-question">Добавить вопрос</button>
         </div>
-        <button type="submit">Сохранить тест</button>
 
+        <div class="form-buttons">
+            <button type="button" class="clear-button" onclick="clearForm()">Очистить форму</button>
+            <button type="submit" class="save-button">Сохранить тест</button>
+        </div>
     </form>
 </div>
 
 <script>
+    function clearForm() {
+        if (confirm("Вы уверены, что хотите очистить форму?")) {
+            document.querySelector("form").reset(); // Сбросить все поля формы
+            document.getElementById("questions-container").innerHTML = ''; // Очистить контейнер с вопросами
+        }
+    }
+
     function addQuestion() {
         const container = document.getElementById("questions-container");
         const questionIndex = container.children.length;
@@ -213,6 +241,7 @@ textarea {
         }
     }
 
+
     function addChoice(questionIndex) {
         const answersDiv = document.getElementById(`answers-${questionIndex}`);
         const choiceIndex = answersDiv.children.length;
@@ -222,23 +251,22 @@ textarea {
         const choiceDiv = document.createElement("div");
         choiceDiv.className = "answer-option";
         choiceDiv.innerHTML = `
-            <textarea name="questions[${questionIndex}][choices][${choiceIndex}][name_of_choice]" rows="1" oninput="autoResize(this)" required></textarea>
+                        <textarea name="questions[${questionIndex}][choices][${choiceIndex}][name_of_choice]" rows="1" oninput="autoResize(this)" required></textarea>
 
             <label class="checkbox-label">
                 <input type="checkbox" id="checkbox-${questionIndex}-${choiceIndex}" name="questions[${questionIndex}][choices][${choiceIndex}][is_correct]"
-                       class="correct-answer-checkbox"
-                       onclick="handleCorrectAnswer(${questionIndex}, ${choiceIndex}, this)"
-                       ${isSingleAnswer ? 'data-single="true"' : ''}>
+                    class="correct-answer-checkbox"
+                    onclick="handleCorrectAnswer(${questionIndex}, ${choiceIndex}, this)"
+                    ${isSingleAnswer ? 'data-single="true"' : ''}>
                 <span></span>
-                <span class="question-mark">?</span>
+                <span class="correct-answer-text">Верно</span>
             </label>
 
             <input type="number" name="questions[${questionIndex}][choices][${choiceIndex}][score]"
-                   class="score-input"
-                   placeholder="Баллы"
-                   min="0">
+                class="score-input"
+                placeholder="Балл"
+                min="0">
         `;
-
         answersDiv.appendChild(choiceDiv);
     }
 
@@ -246,14 +274,12 @@ textarea {
         const questionDiv = document.getElementById(`question-${questionIndex}`);
         const checkboxes = questionDiv.querySelectorAll('.correct-answer-checkbox');
         const scoreInput = checkbox.parentElement.nextElementSibling;
-        const questionMark = checkbox.parentElement.querySelector('.question-mark');
         const answerTypeSelect = document.querySelector(`select[name="questions[${questionIndex}][answer_type]"]`);
         const isSingleAnswer = answerTypeSelect.value === "one_answer";
 
         if (checkbox.checked) {
             // Показать поле для баллов
             scoreInput.style.display = "inline-block";
-            questionMark.style.display = "none";
 
             if (isSingleAnswer) {
                 // Отключаем все другие чекбоксы, кроме текущего
@@ -267,7 +293,6 @@ textarea {
         } else {
             // Если галочка снята, скрыть поле для баллов
             scoreInput.style.display = "none";
-            questionMark.style.display = "inline-block";
 
             if (isSingleAnswer) {
                 checkboxes.forEach((otherCheckbox) => {
@@ -277,14 +302,12 @@ textarea {
         }
     }
 
-
     function autoResize(element) {
         setTimeout(() => {
             element.style.height = 'auto';
             element.style.height = (element.scrollHeight) + 'px';
         }, 100);
     }
-
 </script>
 
 {% endblock %}
