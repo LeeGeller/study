@@ -1,19 +1,19 @@
+from django.template.context_processors import request
+
+from core.utils import get_sorted_questions_data, save_questions
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import redirect
 from django.urls import reverse_lazy
 from django.views.generic import ListView, CreateView, DeleteView, DetailView
 
-from core.utils import get_sorted_questions_data, save_questions
 from study.models import Tests
 import logging
 
 logger = logging.getLogger(__name__)
 
-
 class HomeListView(LoginRequiredMixin, ListView):
     model = Tests
-
 
 class TestsListView(LoginRequiredMixin, ListView):
     model = Tests
@@ -39,14 +39,20 @@ class TestsCreateView(CreateView):
 
     def form_valid(self, form):
         test = form.save()
-        try:
-            test_data = self.request.POST
-            sorted_questions_data = get_sorted_questions_data(test_data)
-            save_questions(sorted_questions_data, test)
-        except Exception as e:
-            print(f"Error during test creation: {e}")
-            messages.error(self.request, "Ошибка при сохранении теста. Проверьте данные.")
-            return self.form_invalid(form)
+        # try:
+        if self.request.method == 'POST':
+            questions_data = self.request.POST
+            print(questions_data)
+        test.save()
+
+        #         sorted_questions_data = get_sorted_questions_data(questions_data)
+        #
+        #         save_questions(sorted_questions_data, test)
+        #
+        # except Exception as e:
+        #     print(f"Error during test creation: {e}")
+        #     messages.error(self.request, "Ошибка при сохранении теста. Проверьте данные.")
+        #     return self.form_invalid(form)
         return redirect(self.success_url)
 
 

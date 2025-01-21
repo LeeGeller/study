@@ -1,5 +1,4 @@
 from django.db import models
-from django.db.models import Prefetch
 
 
 class Tests(models.Model):
@@ -11,24 +10,25 @@ class Tests(models.Model):
     questions_count = models.PositiveIntegerField(default=0, verbose_name='Количество вопросов')
     total_score = models.PositiveIntegerField(default=0, verbose_name='Общее количество очков')
 
-    def update_tests_statistics(self):
-        test = Tests.objects.get(pk=self.pk)
-        print(test)
-
-        self.questions_count = test.questions.count()
-        print('Questions count: ', self.questions_count)
-
-        total_score = 0
-        for question in test.questions.all():
-            print(question.choices.filter(right_answer=True))
-            print(question.choices.filter(right_answer=True).count())
-            total_score += sum(choice.score for choice in question.choices.filter(right_answer=True))
-            print(total_score)
-
-        self.total_score = total_score
-        print('Total score: ', self.total_score)
-
-        self.save()
+    # def update_tests_statistics(self):
+    #     print('Beginning')
+    #     test = Tests.objects.get(pk=self.pk)
+    #     print(test)
+    #
+    #     self.questions_count = test.questions.count()
+    #     print('Questions count: ', self.questions_count)
+    #
+    #     total_score = 0
+    #     for question in test.questions.all():
+    #         print(question.choices.filter(right_answer=True))
+    #         print(question.choices.filter(right_answer=True).count())
+    #         total_score += sum(choice.score for choice in question.choices.filter(right_answer=True))
+    #         print(total_score)
+    #
+    #     self.total_score = total_score
+    #     print('Total score: ', self.total_score)
+    #
+    #     self.save()
 
     def __str__(self):
         return self.name_of_test
@@ -42,21 +42,6 @@ class Questions(models.Model):
     name_of_question = models.TextField(verbose_name='Вопрос', unique=False, help_text='Введите вопрос')
     test = models.ForeignKey(Tests, on_delete=models.CASCADE, related_name='questions')
 
-    def save(self, *args, **kwargs):
-        super().save(*args, **kwargs)
-        print('Save method')
-
-        if self.pk:
-            print('Pk: ', self.pk)
-            self.test.update_tests_statistics()
-
-    def delete(self, *args, **kwargs):
-        test = self.test
-
-        super().delete(*args, **kwargs)
-
-        if self.pk:
-            test.update_tests_statistics()
 
     def __str__(self):
         return self.name_of_question

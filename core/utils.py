@@ -8,9 +8,11 @@ import logging
 logger = logging.getLogger(__name__)
 
 
-def get_sorted_questions_data(test_data: QueryDict) -> dict[int:dict[str:str | int], str:str]:
+def get_sorted_questions_data(test_data: QueryDict) -> dict:
     questions_data = {}
+    logger.info(test_data)
     test_data = dict(test_data)
+    print(test_data)
 
     for key, value in test_data.items():
 
@@ -24,7 +26,6 @@ def get_sorted_questions_data(test_data: QueryDict) -> dict[int:dict[str:str | i
                 questions_data[index_question] = {"choices": []}
 
             if field_question == "choices":
-
                 choice_match = re.match(r'questions\[\d+\]\[choices\]\[(\d+)\]\[(\w+)\]', key)
                 if choice_match:
                     index_choice, field_choice = choice_match.groups()
@@ -36,7 +37,7 @@ def get_sorted_questions_data(test_data: QueryDict) -> dict[int:dict[str:str | i
                     questions_data[index_question]["choices"][index_choice][field_choice] = value
             else:
                 questions_data[index_question][field_question] = value
-    print(test_data)
+    logger.info(f"Processed questions data: {questions_data}")
 
     return questions_data
 
@@ -51,20 +52,21 @@ def save_questions(questions_data: dict, test) -> None:
             name_of_question=data_questions.get("name_of_question"),
             test=test,
         )
-        print(questions_data)
+        question.save()
 
         if answer_type in ["one_answer", "multiple_answers"]:
             for data in data_questions["choices"]:
                 name_of_choice = data.get("name_of_choice")
-                score = 0 if data.get("score", 0) == "" else int(data.get("score"))
+                score = int(data.get("score", 0))
                 right_answer = data.get("is_correct") == "on"
 
-                ChoicesForQuestions.objects.create(
+                choices = ChoicesForQuestions.objects.create(
                     name_of_choice=name_of_choice,
                     question=question,
                     right_answer=right_answer,
                     score=score,
                 )
+                choices.save()
     print(test)
 
     test.update_tests_statistics()
