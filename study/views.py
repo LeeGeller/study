@@ -6,6 +6,9 @@ from django.views.generic import ListView, CreateView, DeleteView, DetailView
 
 from core.utils import get_sorted_questions_data, save_questions
 from study.models import Tests
+import logging
+
+logger = logging.getLogger(__name__)
 
 
 class HomeListView(LoginRequiredMixin, ListView):

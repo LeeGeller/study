@@ -3,6 +3,9 @@ import re
 from django.http import QueryDict
 
 from study.models import ChoicesForQuestions, Questions
+import logging
+
+logger = logging.getLogger(__name__)
 
 
 def get_sorted_questions_data(test_data: QueryDict) -> dict[int:dict[str:str | int], str:str]:
@@ -12,6 +15,7 @@ def get_sorted_questions_data(test_data: QueryDict) -> dict[int:dict[str:str | i
     for key, value in test_data.items():
 
         question_match = re.match(r'questions\[(\d+)\]\[(\w+)\]', key)
+        logger.info(f"Processing key: {key}, value: {value}")
         if question_match:
             index_question, field_question = question_match.groups()
             index_question = int(index_question)
@@ -39,6 +43,7 @@ def get_sorted_questions_data(test_data: QueryDict) -> dict[int:dict[str:str | i
 
 def save_questions(questions_data: dict, test) -> None:
     for index_questions, data_questions in questions_data.items():
+        logger.info(f"Saving question: {data_questions}")
 
         answer_type = data_questions.get("answer_type")
 
