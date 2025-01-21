@@ -66,6 +66,21 @@
         background-color: #45a049;
     }
 
+    .delete-button {
+        display: inline-block;
+        background-color: #FF4C4C;
+        color: white;
+        padding: 10px 15px;
+        border-radius: 5px;
+        text-decoration: none;
+        transition: background-color 0.3s;
+        margin-top: 10px;
+    }
+
+    .delete-button:hover {
+        background-color: #CC0000; /* Темно-красный цвет при наведении */
+    }
+
     .create-test-button {
         background-color: #007BFF; /* Синий цвет для кнопки */
         color: white;
@@ -95,7 +110,7 @@
             <p>Количество вопросов: {{ test.questions_count }}</p>
             <p>Максимальное количество очков: {{ test.total_score }}</p>
             <a href="{% url 'test_detail' test.pk %}" class="test-button">Просмотреть тест</a>
-            <a href="{% url 'test_delete' test.pk %}" class="btn btn-danger">Удалить</a>
+            <a href="{% url 'test_delete' test.pk %}" class="delete-button">Удалить</a>
         </div>
         {% endfor %}
     </div>
