@@ -84,38 +84,68 @@
         .content h1 {
             color: #333;
         }
+            .dropdown {
+        display: none;
+        flex-direction: column;
+        background-color: #ffffff;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        margin-top: 5px;
+    }
+    .dropdown a {
+        padding: 10px;
+        text-decoration: none;
+        color: #333;
+        display: block;
+    }
+    .dropdown a:hover {
+        background-color: #f1f1f1;
+    }
     </style>
 </head>
 <body>
-    <!-- Верхнее меню -->
-    <div class="navbar">
-        <div class="logout-button" style="margin-left: auto;"> <!-- Выровнять кнопку выхода вправо -->
-            {% if user.is_authenticated %}
-                <a href="{% url 'login' %}">Выйти</a>
-            {% endif %}
-        </div>
+<!-- Верхнее меню -->
+<div class="navbar">
+    <div class="logout-button" style="margin-left: auto;"> <!-- Выровнять кнопку выхода вправо -->
+        {% if user.is_authenticated %}
+        <a href="{% url 'login' %}">Выйти</a>
+        {% endif %}
     </div>
+</div>
 
-    <!-- Контейнер для боковой панели и основного контента -->
-    <div class="container">
-        <!-- Боковая панель с тестами -->
-        <div class="sidebar">
-            <div class="button-container">
-                <a href="{% url 'home' %}" class="test-button">Главная</a>
-                <a href="{% url 'tests_list' %}" class="test-button">Мой кабинет</a>
-                <a href="{% url 'tests_list' %}" class="test-button">Тесты</a>
-                <a href="{% url 'tests_list' %}" class="test-button">Показатели</a>
-                <a href="{% url 'tests_list' %}" class="test-button">Обучение</a>
-                <a href="{% url 'tests_list' %}" class="test-button">Управление</a>
+<!-- Контейнер для боковой панели и основного контента -->
+<div class="container">
+    <!-- Боковая панель с тестами -->
+    <div class="sidebar">
+        <div class="button-container">
+            <a href="{% url 'home' %}" class="test-button">Главная</a>
+            <a href="{% url 'tests_list' %}" class="test-button">Мой кабинет</a>
+            <a href="{% url 'tests_list' %}" class="test-button">Тесты</a>
+            <a href="{% url 'tests_list' %}" class="test-button">Показатели</a>
+            <a href="{% url 'tests_list' %}" class="test-button">Обучение</a>
+            <a href="#" class="test-button" id="manage-button">Управление</a>
+            <div class="dropdown" id="manage-dropdown">
+                <a href="{% url 'users' %}" class="dropdown-item">Пользователи</a>
+
             </div>
         </div>
-
-        <!-- Основной контент -->
-        <div class="content">
-            {% block content %}
-            <!-- Контент из дочерних шаблонов будет вставляться сюда -->
-            {% endblock %}
-        </div>
     </div>
+
+    <!-- Основной контент -->
+    <div class="content">
+        {% block content %}
+        <!-- Контент из дочерних шаблонов будет вставляться сюда -->
+        {% endblock %}
+    </div>
+</div>
 </body>
+<script>
+    document.getElementById("manage-button").addEventListener("click", function(event) {
+        event.preventDefault();
+        let dropdown = document.getElementById("manage-dropdown");
+        dropdown.style.display = dropdown.style.display === "flex" ? "none" : "flex";
+    });
+</script>
+
 </html>

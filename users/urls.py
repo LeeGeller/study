@@ -5,12 +5,14 @@ from django.views.generic import RedirectView
 
 from studyplatform import settings
 from users.apps import UsersConfig
+from users.views import UsersListView
 
 appname = UsersConfig.name
 urlpatterns = [
     path('login/', LoginView.as_view(template_name='users/login.html'), name='login'),
     path('logout/', LogoutView.as_view(), name='logout'),
     re_path(r'^accounts/login/$', RedirectView.as_view(url='/login/', permanent=False)),
+    path('users/', UsersListView.as_view(), name='users'),
 ]
 
 if settings.DEBUG:

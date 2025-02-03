@@ -1,7 +1,4 @@
-from audioop import reverse
-
 from django.core.exceptions import PermissionDenied
-from django.shortcuts import redirect
 
 
 class UserIsSupervisorMixin:
