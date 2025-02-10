@@ -10,3 +10,8 @@ class UsersListView(LoginRequiredMixin, ListView):
 
     def get_queryset(self):
         return User.objects.all()
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['users'] = context['object_list']
+        return context
