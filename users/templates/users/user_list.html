@@ -38,7 +38,7 @@
         border-radius: 5px;
         box-shadow: 0 2px 10px rgba(0,0,0,0.1);
         padding: 20px;
-        margin: 10px 0;
+        margin: 20px 0;
         width: 80%;
         transition: transform 0.3s;
     }
@@ -49,6 +49,21 @@
 
     .user-item h2 {
         color: #007BFF;
+    }
+
+    .user-item h2 {
+    color: #007BFF;
+    margin-bottom: 15px; /* Отступ снизу для заголовка */
+    }
+
+    .user-item p {
+        margin-top: 10px; /* Отступ сверху для параграфов */
+        margin-bottom: 10px; /* Отступ снизу для параграфов */
+    }
+
+    .user-item .user-button, .user-item .delete-button {
+        display: inline-block;
+        margin-top: 10px; /* Отступ сверху для кнопок */
     }
 
     .user-button {
@@ -80,11 +95,28 @@
     .delete-button:hover {
         background-color: #CC0000;
     }
+
+    .create-user-button {
+        background-color: #007BFF; /* Синий цвет для кнопки */
+        color: white;
+        padding: 10px 15px;
+        border-radius: 5px;
+        text-decoration: none;
+        transition: background-color 0.3s;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2); /* Тень для кнопки */
+        border: none; /* Убираем границу */
+        font-size: 1em; /* Размер текста */
+    }
+
+    .create-user-button:hover {
+        background-color: #0056b3; /* Более темный синий при наведении */
+    }
 </style>
 
 <div class="users-list-container">
     <div class="header">
         <h1>Список пользователей</h1>
+        <a href="" class="create-user-button">Создать пользователя</a>
     </div>
     <div class="users-list">
         {% for user in users %}
