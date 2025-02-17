@@ -116,14 +116,12 @@
 <div class="users-list-container">
     <div class="header">
         <h1>Список пользователей</h1>
-        <a href="" class="create-user-button">Создать пользователя</a>
+        <a href="{% url 'create_users' %}" class="create-user-button">Создать пользователя</a>
     </div>
     <div class="users-list">
         {% for user in users %}
         <div class="user-item">
             <h2>{{ user.username }}</h2>
-            <p>Роль: {{ user.role }}</p>
-            <p>Роль: {{ user.date_of_birth }}</p>
             <a href="" class="user-button">Просмотреть</a>
             <a href="" class="delete-button">Удалить</a>
         </div>
