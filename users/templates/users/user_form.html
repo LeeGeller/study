@@ -78,6 +78,37 @@
     .save-button:hover {
         background-color: #009bd5;
     }
+
+        select {
+        width: 100%;
+        padding: 10px;
+        font-size: 14px;
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        background-color: #fff;
+        cursor: pointer;
+        transition: border-color 0.3s ease, box-shadow 0.3s ease;
+    }
+    select:focus {
+        border-color: #57c4f4;
+        box-shadow: 0 0 5px rgba(87, 196, 244, 0.5);
+        outline: none;
+    }
+
+    .generate-password-button {
+        background-color: #28a745;
+        color: white;
+        padding: 10px 20px;
+        font-size: 14px;
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+    }
+    .generate-password-button:hover {
+        background-color: #218838;
+    }
+
 </style>
 
 <div class="user-create-container">
@@ -89,7 +120,7 @@
             <label for="username">Имя пользователя:</label>
             <input type="text" id="username" name="username" required>
             {% if form.username.errors %}
-                <div class="error-message">{{ form.username.errors }}</div>
+            <div class="error-message">{{ form.username.errors }}</div>
             {% endif %}
         </div>
 
@@ -97,7 +128,7 @@
             <label for="date_of_birth">Дата рождения:</label>
             <input type="date" id="date_of_birth" name="date_of_birth">
             {% if form.date_of_birth.errors %}
-                <div class="error-message">{{ form.date_of_birth.errors }}</div>
+            <div class="error-message">{{ form.date_of_birth.errors }}</div>
             {% endif %}
         </div>
 
@@ -106,19 +137,21 @@
             <label for="id_password">Пароль:</label>
             <input type="text" id="id_password" name="password">
             {% if form.password.errors %}
-                <div class="error-message">{{ form.password.errors }}</div>
+            <div class="error-message">{{ form.password.errors }}</div>
             {% endif %}
         </div>
 
         <div class="form-section">
-            <button type="button" onclick="generatePassword()">Сгенерировать пароль</button>
+            <button type="button" class="generate-password-button" onclick="generatePassword()">🔑 Сгенерировать пароль
+            </button>
         </div>
 
+
         <div class="form-section">
-            <label for="role">Роль:</label>
-            <input type="text" id="role" name="role">
+            <label for="{{ form.role.id_for_label }}">Роль:</label>
+            {{ form.role }}
             {% if form.role.errors %}
-                <div class="error-message">{{ form.role.errors }}</div>
+            <div class="error-message">{{ form.role.errors }}</div>
             {% endif %}
         </div>
 
