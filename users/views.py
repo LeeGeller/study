@@ -1,6 +1,8 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.shortcuts import render
+from django.http import JsonResponse
+
 from django.urls import reverse_lazy
+from django.views.decorators.http import require_GET
 from django.views.generic import ListView, CreateView
 
 from users.forms import UserCreationForm
@@ -32,3 +34,9 @@ class UsersCreateView(LoginRequiredMixin, CreateView):
         user.save()
 
         return super().form_valid(form)
+
+
+@require_GET
+def generate_password_view(request):
+    password = generate_random_password()
+    return JsonResponse({'password': password})

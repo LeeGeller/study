@@ -5,7 +5,7 @@ from django.views.generic import RedirectView
 
 from studyplatform import settings
 from users.apps import UsersConfig
-from users.views import UsersListView, UsersCreateView
+from users.views import UsersListView, UsersCreateView, generate_password_view
 
 appname = UsersConfig.name
 urlpatterns = [
@@ -13,7 +13,8 @@ urlpatterns = [
     path('logout/', LogoutView.as_view(), name='logout'),
     re_path(r'^accounts/login/$', RedirectView.as_view(url='/login/', permanent=False)),
     path('users/', UsersListView.as_view(), name='users'),
-    path('users_create/', UsersCreateView.as_view(), name='create_users')
+    path('users_create/', UsersCreateView.as_view(), name='create_users'),
+    path('generate_password/', generate_password_view, name='generate_password')
 ]
 
 if settings.DEBUG:

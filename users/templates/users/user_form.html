@@ -10,32 +10,27 @@
         font-family: 'Segoe UI', sans-serif;
         background-color: #f4f6f9;
     }
-
     .user-create-container {
         max-width: 900px;
         margin: 50px auto;
         padding: 30px;
-        background-color: white;
+        background-color: #ffffff;
         border-radius: 12px;
         box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
         animation: fadeIn 0.5s ease;
     }
-
     @keyframes fadeIn {
         from { opacity: 0; }
         to { opacity: 1; }
     }
-
     .form-section {
         margin-bottom: 20px;
     }
-
     label {
         font-size: 16px;
         margin-bottom: 10px;
         display: block;
     }
-
     input[type="text"],
     input[type="email"],
     input[type="date"],
@@ -46,21 +41,18 @@
         border: 1px solid #ddd;
         border-radius: 8px;
         box-sizing: border-box;
-        margin-bottom: 5px;
+        margin-bottom: 10px;
     }
-
     .error-message {
         color: red;
         font-size: 14px;
         margin-top: 5px;
     }
-
     .form-buttons {
         display: flex;
         justify-content: flex-end;
         margin-top: 20px;
     }
-
     .form-buttons button {
         padding: 10px 20px;
         border-radius: 8px;
@@ -71,22 +63,18 @@
         border: none;
         margin-left: 10px;
     }
-
     .clear-button {
         background-color: #ff5c5c;
-        color: white;
+        color: #fff;
         font-size: 12px;
     }
-
     .clear-button:hover {
         background-color: #ff2a2a;
     }
-
     .save-button {
         background-color: #57c4f4;
-        color: white;
+        color: #fff;
     }
-
     .save-button:hover {
         background-color: #009bd5;
     }
@@ -96,8 +84,7 @@
     <h1>Создание пользователя</h1>
     <form method="post">
         {% csrf_token %}
-        
-        <!-- Поле: Имя пользователя -->
+
         <div class="form-section">
             <label for="username">Имя пользователя:</label>
             <input type="text" id="username" name="username" required>
@@ -106,7 +93,6 @@
             {% endif %}
         </div>
 
-        <!-- Поле: Дата рождения -->
         <div class="form-section">
             <label for="date_of_birth">Дата рождения:</label>
             <input type="date" id="date_of_birth" name="date_of_birth">
@@ -115,17 +101,19 @@
             {% endif %}
         </div>
 
-        <!-- Поле: Пароль -->
+        <!-- Поле для пароля, куда будет установлен сгенерированный пароль -->
         <div class="form-section">
-            <label for="password">Пароль:</label>
-            <input type="password" id="password" name="password" required>
+            <label for="id_password">Пароль:</label>
+            <input type="text" id="id_password" name="password">
             {% if form.password.errors %}
                 <div class="error-message">{{ form.password.errors }}</div>
             {% endif %}
         </div>
 
+        <div class="form-section">
+            <button type="button" onclick="generatePassword()">Сгенерировать пароль</button>
+        </div>
 
-        <!-- Поле: Роль -->
         <div class="form-section">
             <label for="role">Роль:</label>
             <input type="text" id="role" name="role">
@@ -140,4 +128,17 @@
         </div>
     </form>
 </div>
+
+<script>
+    function generatePassword() {
+        fetch("{% url 'generate_password' %}")
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById("id_password").value = data.password;
+            })
+            .catch(error => {
+                console.error("Ошибка генерации пароля:", error);
+            });
+    }
+</script>
 {% endblock %}
