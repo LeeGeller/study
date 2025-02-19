@@ -12,7 +12,7 @@ urlpatterns = [
     path('login/', LoginView.as_view(template_name='users/login.html'), name='login'),
     path('logout/', LogoutView.as_view(), name='logout'),
     re_path(r'^accounts/login/$', RedirectView.as_view(url='/login/', permanent=False)),
-    path('users/', UsersListView.as_view(), name='users'),
+    path('users_list/', UsersListView.as_view(), name='users'),
     path('users_create/', UsersCreateView.as_view(), name='create_users'),
     path('generate_password/', generate_password_view, name='generate_password')
 ]
