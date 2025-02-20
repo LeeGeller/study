@@ -109,8 +109,32 @@
         background-color: #218838;
     }
 
-</style>
+    .back-button {
+        display: inline-block;
+        font-size: 16px;
+        font-weight: bold;
+        text-decoration: none;
+        color: #ffffff;
+        background-color: #57c4f4;
+        padding: 10px 20px;
+        border-radius: 8px;
+        transition: background-color 0.3s ease, transform 0.2s ease;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+        margin-bottom: 20px;
+    }
 
+    .back-button:hover {
+        background-color: #009bd5;
+        transform: scale(1.05);
+    }
+
+    .back-button:active {
+        background-color: #0077a5;
+        transform: scale(0.95);
+    }
+
+</style>
+    <a href="{% url 'users:users' %}" class="back-button">←</a>
 <div class="user-create-container">
     <h1>Создание пользователя</h1>
     <form method="post">
@@ -164,7 +188,7 @@
 
 <script>
     function generatePassword() {
-        fetch("{% url 'generate_password' %}")
+        fetch("{% url 'users:generate_password' %}")
             .then(response => response.json())
             .then(data => {
                 document.getElementById("id_password").value = data.password;

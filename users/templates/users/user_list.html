@@ -116,7 +116,7 @@
         <div class="user-item">
             <a href="{% url 'users:delete_user' user.pk %}" class="delete-icon">✖</a>
             <h2>{{ user.username }}</h2>
-            <a href="" class="user-button">Просмотреть</a>
+            <a href="{% url 'users:detail_user' user.pk %}" class="user-button">Просмотреть</a>
         </div>
         {% endfor %}
     </div>

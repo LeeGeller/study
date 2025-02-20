@@ -3,7 +3,7 @@ from django.http import JsonResponse
 
 from django.urls import reverse_lazy
 from django.views.decorators.http import require_GET
-from django.views.generic import ListView, CreateView, DeleteView
+from django.views.generic import ListView, CreateView, DeleteView, DetailView
 
 from users.forms import UserCreationForm
 from users.models import User
@@ -45,9 +45,16 @@ class UsersCreateView(LoginRequiredMixin, CreateView):
 
         return super().form_valid(form)
 
+
 class UsersDeleteView(LoginRequiredMixin, DeleteView):
     model = User
     success_url = reverse_lazy('users:users')
+
+
+class UsersDetailsView(LoginRequiredMixin, DetailView):
+    model = User
+
+
 
 @require_GET
 def generate_password_view(request):

@@ -1,0 +1,101 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ user.username }} - Профиль{% endblock %}
+
+{% block content %}
+<style>
+    .user-detail-container {
+        max-width: 600px;
+        margin: 40px auto;
+        padding: 20px;
+        background: #fff;
+        border: 2px solid #ddd; /* Рамка */
+        border-radius: 10px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    }
+    .user-detail-container h1 {
+        color: #007BFF;
+        margin-bottom: 20px;
+        text-align: center;
+    }
+    .info-section {
+        padding: 10px 0;
+        border-bottom: 1px solid #eee; /* Разделительная линия */
+    }
+    .info-section:last-child {
+        border-bottom: none;
+    }
+    .info-section p {
+        font-size: 1.2em;
+        color: #333;
+        margin: 0;
+        text-align: left;
+    }
+    .user-actions {
+        margin-top: 20px;
+        text-align: center;
+    }
+    .edit-button {
+        background-color: #28A745;
+        color: white;
+        padding: 10px 15px;
+        border-radius: 5px;
+        text-decoration: none;
+        font-size: 1em;
+        transition: background 0.3s;
+    }
+    .edit-button:hover {
+        background-color: #218838;
+    }
+
+        .back-button {
+        display: inline-block;
+        font-size: 16px;
+        font-weight: bold;
+        text-decoration: none;
+        color: #ffffff;
+        background-color: #57c4f4;
+        padding: 10px 20px;
+        border-radius: 8px;
+        transition: background-color 0.3s ease, transform 0.2s ease;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+        margin-bottom: 20px;
+    }
+
+    .back-button:hover {
+        background-color: #009bd5;
+        transform: scale(1.05);
+    }
+
+    .back-button:active {
+        background-color: #0077a5;
+        transform: scale(0.95);
+    }
+</style>
+    <a href="{% url 'users:users' %}" class="back-button">←</a>
+<div class="user-detail-container">
+    <h1>{{ user.username }}</h1>
+
+    <div class="info-section">
+        <p><strong>Дата создания:</strong> {{ user.date_joined|date:"j F Y" }} год</p>
+    </div>
+
+    <div class="info-section">
+        <p><strong>День рождения:</strong>
+            {% if user.date_of_birth %}
+                {{ user.date_of_birth|date:"j F Y" }} год
+            {% else %}
+                Не указано
+            {% endif %}
+        </p>
+    </div>
+
+    <div class="info-section">
+        <p><strong>Роль:</strong> {{ user.role }}</p>
+    </div>
+
+    <div class="user-actions">
+        <a href="" class="edit-button">Редактировать</a>
+    </div>
+</div>
+{% endblock %}

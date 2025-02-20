@@ -103,6 +103,7 @@
         background-color: #f1f1f1;
     }
     </style>
+    {% block extra_head %}{% endblock %}
 </head>
 <body>
 <!-- Верхнее меню -->
@@ -131,11 +132,9 @@
             </div>
         </div>
     </div>
-
-    <!-- Основной контент -->
     <div class="content">
         {% block content %}
-        <!-- Контент из дочерних шаблонов будет вставляться сюда -->
+
         {% endblock %}
     </div>
 </div>
