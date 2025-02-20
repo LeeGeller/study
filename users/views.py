@@ -3,9 +3,9 @@ from django.http import JsonResponse
 
 from django.urls import reverse_lazy
 from django.views.decorators.http import require_GET
-from django.views.generic import ListView, CreateView, DeleteView, DetailView
+from django.views.generic import ListView, CreateView, DeleteView, DetailView, UpdateView
 
-from users.forms import UserCreationForm
+from users.forms import UserCreationForm, UserUpdateForm
 from users.models import User
 from users.utils import generate_random_password
 
@@ -54,6 +54,12 @@ class UsersDeleteView(LoginRequiredMixin, DeleteView):
 class UsersDetailsView(LoginRequiredMixin, DetailView):
     model = User
 
+
+class UsersUpdateView(LoginRequiredMixin, UpdateView):
+    model = User
+    form_class = UserUpdateForm
+    template_name = 'users/user_profile_update.html'
+    success_url = reverse_lazy('users:users')
 
 
 @require_GET

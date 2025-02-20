@@ -30,3 +30,26 @@ class UserCreationForm(forms.ModelForm):
             user.groups.set([group])
 
         return user
+
+
+class UserUpdateForm(forms.ModelForm):
+    password = forms.CharField(required=False,
+                               widget=forms.TextInput(attrs={'readonly': 'readonly', 'id': 'id_password'}),
+                               label="Новый пароль")
+
+    class Meta:
+        model = User
+        fields = ('username', 'date_of_birth', 'role')
+
+        def save(self, commit=False):
+            user = super().save(commit=False)
+            if self.cleaned_data.get('password'):
+                user.set_password(self.cleaned_data.get('password'))
+
+            if self.cleaned_data.get('role'):
+                user.groups.clear()
+                user.groups.set([self.cleaned_data.get('role')])
+
+            if commit:
+                user.save()
+            return user

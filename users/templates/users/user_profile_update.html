@@ -1,0 +1,180 @@
+{% extends 'base.html' %}
+
+{% block title %}Редактирование пользователя{% endblock %}
+
+{% block content %}
+<style>
+    body {
+        font-size: 16px;
+        line-height: 1.6;
+        font-family: 'Segoe UI', sans-serif;
+        background-color: #f4f6f9;
+    }
+    .user-edit-container {
+        max-width: 900px;
+        margin: 50px auto;
+        padding: 30px;
+        background-color: #ffffff;
+        border-radius: 12px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        animation: fadeIn 0.5s ease;
+    }
+    @keyframes fadeIn {
+        from { opacity: 0; }
+        to { opacity: 1; }
+    }
+    .form-section {
+        margin-bottom: 20px;
+    }
+    label {
+        font-size: 16px;
+        margin-bottom: 10px;
+        display: block;
+    }
+    input[type="text"],
+    input[type="email"],
+    input[type="date"],
+    input[type="password"] {
+        width: 100%;
+        padding: 10px;
+        font-size: 14px;
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        box-sizing: border-box;
+        margin-bottom: 10px;
+    }
+    select {
+        width: 100%;
+        padding: 10px;
+        font-size: 14px;
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        background-color: #fff;
+        cursor: pointer;
+        transition: border-color 0.3s ease, box-shadow 0.3s ease;
+    }
+    select:focus {
+        border-color: #57c4f4;
+        box-shadow: 0 0 5px rgba(87, 196, 244, 0.5);
+        outline: none;
+    }
+    .form-buttons {
+        display: flex;
+        justify-content: flex-end;
+        margin-top: 20px;
+    }
+    .form-buttons button {
+        padding: 10px 20px;
+        border-radius: 8px;
+        font-size: 14px;
+        font-weight: bold;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+        border: none;
+        margin-left: 10px;
+    }
+    .save-button {
+        background-color: #57c4f4;
+        color: #fff;
+    }
+    .save-button:hover {
+        background-color: #009bd5;
+    }
+    .back-button {
+        display: inline-block;
+        font-size: 16px;
+        font-weight: bold;
+        text-decoration: none;
+        color: #ffffff;
+        background-color: #57c4f4;
+        padding: 10px 20px;
+        border-radius: 8px;
+        transition: background-color 0.3s ease, transform 0.2s ease;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+        margin-bottom: 20px;
+    }
+    .back-button:hover {
+        background-color: #009bd5;
+        transform: scale(1.05);
+    }
+    .back-button:active {
+        background-color: #0077a5;
+        transform: scale(0.95);
+    }
+        .generate-password-button {
+        background-color: #28a745;
+        color: white;
+        padding: 10px 20px;
+        font-size: 14px;
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+    }
+    .generate-password-button:hover {
+        background-color: #218838;
+    }
+</style>
+
+<a href="{% url 'users:users' %}" class="back-button">←</a>
+
+<div class="user-edit-container">
+    <h1>Редактирование пользователя</h1>
+    <form method="post">
+        {% csrf_token %}
+
+        <div class="form-section">
+            <label for="{{ form.username.id_for_label }}">Имя пользователя:</label>
+            {{ form.username }}
+            {% if form.username.errors %}
+            <div class="error-message">{{ form.username.errors }}</div>
+            {% endif %}
+        </div>
+
+        <div class="form-section">
+            <label for="{{ form.date_of_birth.id_for_label }}">Дата рождения:</label>
+            {{ form.date_of_birth }}
+            {% if form.date_of_birth.errors %}
+            <div class="error-message">{{ form.date_of_birth.errors }}</div>
+            {% endif %}
+        </div>
+
+        <div class="form-section">
+            <label for="{{ form.role.id_for_label }}">Роль:</label>
+            {{ form.role }}
+            {% if form.role.errors %}
+            <div class="error-message">{{ form.role.errors }}</div>
+            {% endif %}
+        </div>
+
+        <div class="form-section">
+            <label for="{{ form.password.id_for_label }}">Новый пароль (оставьте пустым, если не хотите менять):</label>
+            {{ form.password }}
+            {% if form.password.errors %}
+            <div class="error-message">{{ form.password.errors }}</div>
+            {% endif %}
+        </div>
+        <div class="form-section">
+            <button type="button" class="generate-password-button" onclick="generatePassword()">🔑 Сгенерировать пароль
+            </button>
+        </div>
+
+        <div class="form-buttons">
+            <button type="submit" class="save-button">Сохранить изменения</button>
+        </div>
+    </form>
+</div>
+
+<script>
+    function generatePassword() {
+        fetch("{% url 'users:generate_password' %}")
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById("id_password").value = data.password;
+            })
+            .catch(error => {
+                console.error("Ошибка генерации пароля:", error);
+            });
+    }
+</script>
+{% endblock %}
