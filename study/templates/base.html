@@ -109,7 +109,7 @@
 <div class="navbar">
     <div class="logout-button" style="margin-left: auto;"> <!-- Выровнять кнопку выхода вправо -->
         {% if user.is_authenticated %}
-        <a href="{% url 'login' %}">Выйти</a>
+        <a href="{% url 'users:login' %}">Выйти</a>
         {% endif %}
     </div>
 </div>
@@ -119,14 +119,14 @@
     <!-- Боковая панель с тестами -->
     <div class="sidebar">
         <div class="button-container">
-            <a href="{% url 'home' %}" class="test-button">Главная</a>
-            <a href="{% url 'tests_list' %}" class="test-button">Мой кабинет</a>
-            <a href="{% url 'tests_list' %}" class="test-button">Тесты</a>
-            <a href="{% url 'tests_list' %}" class="test-button">Показатели</a>
-            <a href="{% url 'tests_list' %}" class="test-button">Обучение</a>
+            <a href="{% url 'study:home' %}" class="test-button">Главная</a>
+            <a href="" class="test-button">Мой кабинет</a>
+            <a href="{% url 'study:tests_list' %}" class="test-button">Тесты</a>
+            <a href="" class="test-button">Показатели</a>
+            <a href="{" class="test-button">Обучение</a>
             <a href="#" class="test-button" id="manage-button">Управление</a>
             <div class="dropdown" id="manage-dropdown">
-                <a href="{% url 'users' %}" class="dropdown-item">Пользователи</a>
+                <a href="{% url 'users:users' %}" class="dropdown-item">Пользователи</a>
 
             </div>
         </div>
