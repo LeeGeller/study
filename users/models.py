@@ -7,6 +7,10 @@ class User(AbstractUser):
                              related_name="user_role")
     date_of_birth = models.DateField(verbose_name="Дата рождения", blank=True, null=True)
 
+    @property
+    def is_operator(self):
+        return self.role.name == 'Оператор'
+
     def __str__(self):
         return self.username
 
