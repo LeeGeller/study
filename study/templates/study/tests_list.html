@@ -101,7 +101,7 @@
 <div class="tests-list-container">
     <div class="header">
         <h1>Список тестов</h1>
-        <a href="{% url 'test_form' %}" class="create-test-button">Создать тест</a>
+        <a href="{% url 'study:test_create' %}" class="create-test-button">Создать тест</a>
     </div>
     <div class="tests-list">
         {% for test in tests %}
@@ -109,8 +109,8 @@
             <h2>{{ test.name_of_test }}</h2>
             <p>Количество вопросов: {{ test.questions_count }}</p>
             <p>Максимальное количество очков: {{ test.total_score }}</p>
-            <a href="{% url 'study:test_detail', test.pk %}" class="test-button">Просмотреть тест</a>
-            <a href="{% url 'study:test_delete', test.pk %}" class="delete-button">Удалить</a>
+            <a href="{% url 'study:test_detail' test.pk %}" class="test-button">Просмотреть тест</a>
+            <a href="{% url 'study:test_delete' test.pk %}" class="delete-button">Удалить</a>
         </div>
         {% endfor %}
     </div>

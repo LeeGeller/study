@@ -1,7 +1,3 @@
-from django.template.context_processors import request
-
-from core.utils import get_sorted_questions_data, save_questions
-from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import redirect
 from django.urls import reverse_lazy
@@ -12,8 +8,10 @@ import logging
 
 logger = logging.getLogger(__name__)
 
+
 class HomeListView(LoginRequiredMixin, ListView):
     model = Tests
+
 
 class TestsListView(LoginRequiredMixin, ListView):
     model = Tests

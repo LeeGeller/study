@@ -125,6 +125,7 @@
             <a href="{% url 'study:tests_list' %}" class="test-button">Тесты</a>
             <a href="" class="test-button">Показатели</a>
             <a href="{" class="test-button">Обучение</a>
+            {% if user_%}
             <a href="#" class="test-button" id="manage-button">Управление</a>
             <div class="dropdown" id="manage-dropdown">
                 <a href="{% url 'users:users' %}" class="dropdown-item">Пользователи</a>

@@ -70,7 +70,7 @@
 <body>
     <div class="login-container">
         <h2>Платформа для обучений</h2>
-        <form method="POST" action="{% url 'login' %}">
+        <form method="POST" action="{% url 'users:login' %}">
             {% csrf_token %}
             {% if form.non_field_errors %}
                 <div class="error">{{ form.non_field_errors }}</div>
