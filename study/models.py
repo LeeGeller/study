@@ -42,7 +42,6 @@ class Questions(models.Model):
     name_of_question = models.TextField(verbose_name='Вопрос', unique=False, help_text='Введите вопрос')
     test = models.ForeignKey(Tests, on_delete=models.CASCADE, related_name='questions')
 
-
     def __str__(self):
         return self.name_of_question
 
@@ -83,14 +82,31 @@ class UserTestAssignment(models.Model):
     )
 
     user = models.ForeignKey(
-        'users.User', on_delete=models.CASCADE, related_name='user_assignments',
-        null=True, blank=True, verbose_name='Пользователь'
+        'users.User',
+        on_delete=models.CASCADE,
+        related_name='user_assignments',
+        null=True,
+        blank=True,
+        verbose_name='Пользователь'
     )
-    test = models.ForeignKey('study.Tests', on_delete=models.CASCADE, related_name='assigned_tests',
-                             verbose_name='Тест', null=True, blank=True)
+    owner = models.ForeignKey(
+        'users.User',
+        on_delete=models.SET_NULL,
+        related_name='owner',
+        null=True, blank=True,
+        verbose_name='Создатель')
+    test = models.ForeignKey(
+        'study.Tests',
+        on_delete=models.CASCADE,
+        related_name='assigned_tests',
+        verbose_name='Тест',
+        null=True,
+        blank=True)
     attempts = models.PositiveIntegerField(verbose_name='Количество попыток', default=0)
     attempt_at = models.DateTimeField(verbose_name='Попытка', auto_now_add=True)
-    status = models.CharField(max_length=20,
-                              choices=CHOICES_OF_STATUS,
-                              default='in_progress', verbose_name='Статус'
-                              )
+    status = models.CharField(
+        max_length=20,
+        choices=CHOICES_OF_STATUS,
+        default='in_progress', verbose_name='Статус'
+        )
+    score = models.PositiveIntegerField(verbose_name='Общий балл')

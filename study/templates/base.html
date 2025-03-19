@@ -125,7 +125,7 @@
             <a href="{% url 'study:tests_list' %}" class="test-button">Тесты</a>
             <a href="" class="test-button">Показатели</a>
             <a href="{" class="test-button">Обучение</a>
-            {% if not user.is_operator %}
+            {% if not user.is_operator or user.is_superuser%}
             <a href="#" class="test-button" id="manage-button">Управление</a>
             <div class="dropdown" id="manage-dropdown">
                 <a href="{% url 'users:users' %}" class="dropdown-item">Пользователи</a>
